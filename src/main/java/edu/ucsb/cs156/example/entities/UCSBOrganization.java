@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
  *
  * <p>UCSBOrganization are the student organizations at UCSB
  */
+// Foo(car);
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
