@@ -114,7 +114,7 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
             .orgCode("ZPR")
             .orgTranslationShort("ZETAPHIRHO")
             .orgTranslation("ZETAPHIRHO")
-            .inactive(false)
+            .inactive(true)
             .build();
 
     when(ucsbOrganizationRepository.save(eq(zetaphirho))).thenReturn(zetaphirho);
@@ -123,7 +123,7 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
     MvcResult response =
         mockMvc
             .perform(
-                post("/api/ucsborganization/post?orgCode=ZPR&orgTranslationShort=ZETAPHIRHO&orgTranslation=ZETAPHIRHO&inactive=false")
+                post("/api/ucsborganization/post?orgCode=ZPR&orgTranslationShort=ZETAPHIRHO&orgTranslation=ZETAPHIRHO&inactive=true")
                     .with(csrf()))
             .andExpect(status().isOk())
             .andReturn();
