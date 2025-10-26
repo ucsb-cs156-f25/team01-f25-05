@@ -88,7 +88,7 @@ public class UCSBOrganizationController extends ApiController {
   }
 
   /**
-   * Update a single organization. Accessible only to users with the role "ROLE_ADMIN".
+   * Update a single UCSB organization. Accessible only to users with the role "ROLE_ADMIN".
    *
    * @param code code of the organization
    * @param incoming the new ucsborganization contents
