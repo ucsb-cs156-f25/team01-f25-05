@@ -37,7 +37,8 @@ public class UCSBOrganizationController extends ApiController {
   }
 
   /**
-   * This method creates a new organization. Accessible only to users with the role "ROLE_ADMIN".
+   * This method creates a new UCSB organization. Accessible only to users with the role
+   * "ROLE_ADMIN".
    *
    * @param orgCode organization code of the organization
    * @param orgTranslationShort a short translation of the organization
