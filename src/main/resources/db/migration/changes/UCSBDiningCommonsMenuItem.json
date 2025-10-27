@@ -2,7 +2,7 @@
     "databaseChangeLog": [
       {
         "changeSet": {
-          "id": "UCSBDiningCommonsMenuItem-1",
+          "id": "UCSBDiningCommonsMenuItems-1",
           "author": "jasminetan0510",
           "preConditions": [
             {
