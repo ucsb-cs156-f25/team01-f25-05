@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import edu.ucsb.cs156.example.ControllerTestCase;
@@ -24,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -257,5 +259,147 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
     Map<String, Object> json = responseToJson(response);
     assertEquals("EntityNotFoundException", json.get("type"));
     assertEquals("RecommendationRequest with id 7 not found", json.get("message"));
+  }
+
+  @WithMockUser(roles = {"ADMIN", "USER"})
+  @Test
+  public void admin_can_edit_an_existing_request_requesterEmail() throws Exception {
+    // arrange
+
+    LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+    LocalDateTime ldt2 = LocalDateTime.parse("2026-01-03T00:00:00");
+
+    RecommendationRequest recReq1 =
+        RecommendationRequest.builder()
+            .requesterEmail("123@gmail.com")
+            .professorEmail("prof@gmail.com")
+            .explanation("Hello")
+            .dateRequested(ldt1)
+            .dateNeeded(ldt2)
+            .done(true)
+            .build();
+
+    RecommendationRequest recReq2 =
+        RecommendationRequest.builder()
+            .requesterEmail("456@gmail.com")
+            .professorEmail("prof@gmail.com")
+            .explanation("Hello")
+            .dateRequested(ldt1)
+            .dateNeeded(ldt2)
+            .done(true)
+            .build();
+
+    String requestBody = mapper.writeValueAsString(recReq2);
+
+    when(recReqRepository.findById(eq(67L))).thenReturn(Optional.of(recReq1));
+
+    // act
+    MvcResult response =
+        mockMvc
+            .perform(
+                put("/api/recommendationrequest?id=67")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .characterEncoding("utf-8")
+                    .content(requestBody)
+                    .with(csrf()))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    // assert
+    verify(recReqRepository, times(1)).findById(67L);
+    verify(recReqRepository, times(1)).save(recReq2); // should be saved with correct user
+    String responseString = response.getResponse().getContentAsString();
+    assertEquals(requestBody, responseString);
+  }
+
+  @WithMockUser(roles = {"ADMIN", "USER"})
+  @Test
+  public void admin_can_edit_an_existing_request_all() throws Exception {
+    // arrange
+
+    LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+    LocalDateTime ldt2 = LocalDateTime.parse("2026-01-03T00:00:00");
+
+    RecommendationRequest recReq1 =
+        RecommendationRequest.builder()
+            .requesterEmail("123@gmail.com")
+            .professorEmail("prof@gmail.com")
+            .explanation("Hello")
+            .dateRequested(ldt1)
+            .dateNeeded(ldt2)
+            .done(true)
+            .build();
+
+    RecommendationRequest recReq2 =
+        RecommendationRequest.builder()
+            .requesterEmail("456@gmail.com")
+            .professorEmail("prof2@gmail.com")
+            .explanation("Goodbye")
+            .dateRequested(ldt2)
+            .dateNeeded(ldt1)
+            .done(false)
+            .build();
+
+    String requestBody = mapper.writeValueAsString(recReq2);
+
+    when(recReqRepository.findById(eq(67L))).thenReturn(Optional.of(recReq1));
+
+    // act
+    MvcResult response =
+        mockMvc
+            .perform(
+                put("/api/recommendationrequest?id=67")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .characterEncoding("utf-8")
+                    .content(requestBody)
+                    .with(csrf()))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    // assert
+    verify(recReqRepository, times(1)).findById(67L);
+    verify(recReqRepository, times(1)).save(recReq2); // should be saved with correct user
+    String responseString = response.getResponse().getContentAsString();
+    assertEquals(requestBody, responseString);
+  }
+
+  @WithMockUser(roles = {"ADMIN", "USER"})
+  @Test
+  public void admin_cannot_edit_ucsbdate_that_does_not_exist() throws Exception {
+    // arrange
+
+    LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+    LocalDateTime ldt2 = LocalDateTime.parse("2026-01-03T00:00:00");
+
+    RecommendationRequest recReq1 =
+        RecommendationRequest.builder()
+            .requesterEmail("123@gmail.com")
+            .professorEmail("prof@gmail.com")
+            .explanation("Hello")
+            .dateRequested(ldt1)
+            .dateNeeded(ldt2)
+            .done(true)
+            .build();
+
+    String requestBody = mapper.writeValueAsString(recReq1);
+
+    when(recReqRepository.findById(eq(67L))).thenReturn(Optional.empty());
+
+    // act
+    MvcResult response =
+        mockMvc
+            .perform(
+                put("/api/recommendationrequest?id=67")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .characterEncoding("utf-8")
+                    .content(requestBody)
+                    .with(csrf()))
+            .andExpect(status().isNotFound())
+            .andReturn();
+
+    // assert
+    verify(recReqRepository, times(1)).findById(67L);
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("RecommendationRequest with id 67 not found", json.get("message"));
   }
 }
