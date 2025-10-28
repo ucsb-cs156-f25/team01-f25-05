@@ -1,9 +1,6 @@
-{
-  "databaseChangeLog": [
-    { "include": { "file": "db/migration/changes/Restaurants.json" } },
-    { "include": { "file": "db/migration/changes/UCSBDates.json" } },
-    { "include": { "file": "db/migration/changes/UCSBDiningCommons.json" } },
-    { "include": { "file": "db/migration/changes/Users.json" } },
-    { "include": { "file": "db/migration/changes/RecommendationRequest.json" } }
-  ]
-}
+{ "databaseChangeLog": [
+    {
+        "includeAll": {"path": "db/migration/changes/"}
+    }
+]}
+
