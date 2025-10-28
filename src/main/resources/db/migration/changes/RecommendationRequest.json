@@ -64,13 +64,12 @@
                     }
                   },
                   {
-                    "colum": {
+                    "column": {
                         "name": "DONE",
                         "type": "BOOLEAN"
                     }
                   }
                 ],
-
                 "tableName": "RecommendationRequest"
               }
             }
