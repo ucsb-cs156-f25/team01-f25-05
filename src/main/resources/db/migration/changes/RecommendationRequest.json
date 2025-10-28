@@ -12,7 +12,7 @@
               "not": [
                 {
                   "tableExists": {
-                    "tableName": "RecommendationRequest"
+                    "tableName": "recommendation_request"
                   }
                 }
               ]
@@ -27,51 +27,51 @@
                       "autoIncrement": true,
                       "constraints": {
                         "primaryKey": true,
-                        "primaryKeyName": "RecommendationRequest_PK"
+                        "primaryKeyName": "recommendation_request_pk"
                       },
-                      "name": "ID",
+                      "name": "id",
                       "type": "BIGINT"
                     }
                   },
                   {
                     "column": {
-                      "name": "REQUEST_EMAIL",
+                      "name": "requester_email",
                       "type": "VARCHAR(255)"
                     }
                   },
                   {
                     "column": {
-                      "name": "PROFESSOR_EMAIL",
+                      "name": "professor_email",
                       "type": "VARCHAR(255)"
                     }
                   },
                   {
                     "column": {
-                      "name": "EXPLANATION",
+                      "name": "explanation",
                       "type": "VARCHAR(255)"
                     }
                   },
                   {
                     "column": {
-                      "name": "DATE_REQUESTED",
+                      "name": "date_requested",
                       "type": "TIMESTAMP"
                     }
                   },
                   {
                     "column": {
-                      "name": "DATE_NEEDED",
+                      "name": "date_needed",
                       "type": "TIMESTAMP"
                     }
                   },
                   {
-                    "colum": {
-                        "name": "DONE",
+                    "column": {
+                        "name": "done",
                         "type": "BOOLEAN"
                     }
                   }
                 ],
 
-                "tableName": "RecommendationRequest"
+                "tableName": "recommendation_request"
               }
             }
           ]

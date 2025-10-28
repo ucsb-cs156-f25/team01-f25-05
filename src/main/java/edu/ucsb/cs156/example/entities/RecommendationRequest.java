@@ -30,8 +30,4 @@ public class RecommendationRequest {
   LocalDateTime dateRequested;
   LocalDateTime dateNeeded;
   boolean done;
-
-  private String quarterYYYYQ;
-  private String name;
-  private LocalDateTime localDateTime;
 }
