@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
   @Operation(summary = &quot;List all Recommendation Requests&quot;)
   @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
   @GetMapping(&quot;/all&quot;)
-  public Iterable&lt;RecommendationRequest&gt; allRequests() {
+  public Iterable&lt;RecommendationRequest&gt; allRecommendattionRequests() {
 <span class="fc" id="L38">    Iterable&lt;RecommendationRequest&gt; reqs = recReqRepository.findAll();</span>
 <span class="fc" id="L39">    return reqs;</span>
   }
