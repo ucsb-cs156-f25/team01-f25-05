@@ -34,7 +34,7 @@ public class RecommendationRequestController extends ApiController {
   @Operation(summary = "List all Recommendation Requests")
   @PreAuthorize("hasRole('ROLE_USER')")
   @GetMapping("/all")
-  public Iterable<RecommendationRequest> allRequests() {
+  public Iterable<RecommendationRequest> allRecommendattionRequests() {
     Iterable<RecommendationRequest> reqs = recReqRepository.findAll();
     return reqs;
   }
