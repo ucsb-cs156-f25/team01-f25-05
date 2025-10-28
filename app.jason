@@ -1,8 +1,0 @@
-{
-  "healthchecks": {
-    "web": [
-      { "path": "/actuator/health", "initialDelay": 60, "interval": 10, "timeout": 5, "statusCodes": [200,204,302] }
-    ]
-  },
-  "formation": { "web": { "quantity": 1 } }
-}

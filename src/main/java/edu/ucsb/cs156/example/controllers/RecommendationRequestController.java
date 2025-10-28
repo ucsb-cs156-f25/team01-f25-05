@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /** This is a REST controller for UCSBDates */
-@Tag(name = "UCSBDates")
+@Tag(name = "RequestController")
 @RequestMapping("/api/recommendationrequest")
 @RestController
 @Slf4j
@@ -34,7 +34,7 @@ public class RecommendationRequestController extends ApiController {
   @Operation(summary = "List all Recommendation Requests")
   @PreAuthorize("hasRole('ROLE_USER')")
   @GetMapping("/all")
-  public Iterable<RecommendationRequest> allUCSBDates() {
+  public Iterable<RecommendationRequest> allRequests() {
     Iterable<RecommendationRequest> reqs = recReqRepository.findAll();
     return reqs;
   }
