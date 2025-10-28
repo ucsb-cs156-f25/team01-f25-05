@@ -155,4 +155,40 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
     String responseString = response.getResponse().getContentAsString();
     assertEquals(expectedJson, responseString);
   }
+
+  @WithMockUser(roles = {"ADMIN", "USER"})
+  @Test
+  public void an_admin_user_can_post_a_new_request_2() throws Exception {
+    // arrange
+
+    LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+    LocalDateTime ldt2 = LocalDateTime.parse("2026-01-03T00:00:00");
+
+    RecommendationRequest recReq1 =
+        RecommendationRequest.builder()
+            .requesterEmail("123@gmail.com")
+            .professorEmail("prof@gmail.com")
+            .explanation("Hello")
+            .dateRequested(ldt1)
+            .dateNeeded(ldt2)
+            .done(true)
+            .build();
+
+    when(recReqRepository.save(eq(recReq1))).thenReturn(recReq1);
+
+    // act
+    MvcResult response =
+        mockMvc
+            .perform(
+                post("/api/recommendationrequest/post?requesterEmail=123@gmail.com&professorEmail=prof@gmail.com&explanation=Hello&dateRequested=2022-01-03T00:00:00&dateNeeded=2026-01-03T00:00:00&done=true")
+                    .with(csrf()))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    // assert
+    verify(recReqRepository, times(1)).save(recReq1);
+    String expectedJson = mapper.writeValueAsString(recReq1);
+    String responseString = response.getResponse().getContentAsString();
+    assertEquals(expectedJson, responseString);
+  }
 }
