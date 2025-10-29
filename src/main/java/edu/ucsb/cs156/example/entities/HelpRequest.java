@@ -1,4 +1,4 @@
-package edu.ucsb.cs156.dining.entities;
+package edu.ucsb.cs156.example.entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
