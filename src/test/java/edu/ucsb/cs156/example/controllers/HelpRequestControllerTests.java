@@ -2,6 +2,7 @@ package edu.ucsb.cs156.example.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq; // <-- needed for eq(...)
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -18,6 +19,8 @@ import edu.ucsb.cs156.example.testconfig.TestConfig;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map; // <-- only needed if you use Map in assertions elsewhere
+import java.util.Optional; // <-- needed for Optional
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -136,6 +139,63 @@ public class HelpRequestControllerTests extends ControllerTestCase {
 
     // verify JSON response mirrors what repo returned
     String expectedJson = mapper.writeValueAsString(savedFromRepo);
+    String responseString = response.getResponse().getContentAsString();
+    assertEquals(expectedJson, responseString);
+  }
+
+  @Test
+  public void logged_out_users_cannot_get_by_id() throws Exception {
+    mockMvc
+        .perform(get("/api/helprequests?id=7"))
+        .andExpect(status().is(403)); // logged out users can't get by id
+  }
+
+  @WithMockUser(roles = {"USER"})
+  @Test
+  public void test_that_logged_in_user_can_get_by_id_when_the_id_does_not_exist() throws Exception {
+
+    // arrange
+
+    when(helpRequestRepository.findById(eq(7L))).thenReturn(Optional.empty());
+
+    // act
+    MvcResult response =
+        mockMvc.perform(get("/api/helprequests?id=7")).andExpect(status().isNotFound()).andReturn();
+
+    // assert
+
+    verify(helpRequestRepository, times(1)).findById(eq(7L));
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("EntityNotFoundException", json.get("type"));
+    assertEquals("HelpRequest with id 7 not found", json.get("message"));
+  }
+
+  @WithMockUser(roles = {"USER"})
+  @Test
+  public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws Exception {
+
+    // arrange
+    LocalDateTime t = LocalDateTime.parse("2024-05-01T09:45:00");
+
+    HelpRequest helpRequest =
+        HelpRequest.builder()
+            .requesterEmail("carol@ucsb.edu")
+            .teamId("s23-5pm-4")
+            .tableOrBreakoutRoom("Breakout B")
+            .requestTime(t)
+            .explanation("Need help with PIT tests")
+            .solved(false)
+            .build();
+
+    when(helpRequestRepository.findById(eq(7L))).thenReturn(Optional.of(helpRequest));
+
+    // act
+    MvcResult response =
+        mockMvc.perform(get("/api/helprequests?id=7")).andExpect(status().isOk()).andReturn();
+
+    // assert
+    verify(helpRequestRepository, times(1)).findById(eq(7L));
+    String expectedJson = mapper.writeValueAsString(helpRequest);
     String responseString = response.getResponse().getContentAsString();
     assertEquals(expectedJson, responseString);
   }
