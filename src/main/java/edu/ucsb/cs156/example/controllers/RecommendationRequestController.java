@@ -7,6 +7,7 @@ import edu.ucsb.cs156.example.repositories.RecommendationRequestRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -107,6 +110,37 @@ public class RecommendationRequestController extends ApiController {
         recReqRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(RecommendationRequest.class, id));
+
+    return req;
+  }
+
+  /**
+   * Update a single request
+   *
+   * @param id id of the request to update
+   * @param incoming the new request
+   * @return the updated request object
+   */
+  @Operation(summary = "Update a single recommendation request")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PutMapping("")
+  public RecommendationRequest updateUCSBDate(
+      @Parameter(name = "id") @RequestParam Long id,
+      @RequestBody @Valid RecommendationRequest incoming) {
+
+    RecommendationRequest req =
+        recReqRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(RecommendationRequest.class, id));
+
+    req.setRequesterEmail(incoming.getRequesterEmail());
+    req.setProfessorEmail(incoming.getProfessorEmail());
+    req.setExplanation(incoming.getExplanation());
+    req.setDateRequested(incoming.getDateRequested());
+    req.setDateNeeded(incoming.getDateNeeded());
+    req.setDone(incoming.getDone());
+
+    recReqRepository.save(req);
 
     return req;
   }
