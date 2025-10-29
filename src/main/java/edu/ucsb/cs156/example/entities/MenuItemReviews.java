@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "menuitemreview")
+@Entity(name = "menuitemreviews")
 public class MenuItemReviews {
   @Id private long id;
   private String reviewerEmail;
