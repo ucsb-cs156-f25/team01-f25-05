@@ -2,6 +2,7 @@
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import edu.ucsb.cs156.example.entities.MenuItemReviews;
+import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.MenuItemReviewsRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = &quot;MenuItemReviews&quot;)
 @RequestMapping(&quot;/api/menuitemreviews&quot;)
 @RestController
-<span class="fc" id="L24">@Slf4j</span>
-<span class="fc" id="L25">public class MenuItemReviewsController extends ApiController {</span>
+<span class="fc" id="L25">@Slf4j</span>
+<span class="fc" id="L26">public class MenuItemReviewsController extends ApiController {</span>
 
   @Autowired MenuItemReviewsRepository menuItemReviewsRepository;
 
@@ -35,28 +36,27 @@ import org.springframework.web.bind.annotation.RestController;
   @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
   @GetMapping(&quot;/all&quot;)
   public Iterable&lt;MenuItemReviews&gt; allMenuItemReviews() {
-<span class="fc" id="L38">    Iterable&lt;MenuItemReviews&gt; reviews = menuItemReviewsRepository.findAll();</span>
-<span class="fc" id="L39">    return reviews;</span>
+<span class="fc" id="L39">    Iterable&lt;MenuItemReviews&gt; reviews = menuItemReviewsRepository.findAll();</span>
+<span class="fc" id="L40">    return reviews;</span>
   }
 
-  //
-  // /**
-  //  * Get a single review by id
-  //  *
-  //  * @param id the id of the review
-  //  * @return a MenuItemReviews
-  //  */
-  // @Operation(summary = &quot;Get a single menu item review&quot;)
-  // @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
-  // @GetMapping(&quot;&quot;)
-  // public MenuItemReviews getById(@Parameter(name = &quot;id&quot;) @RequestParam Long id) {
-  //   MenuItemReviews review =
-  //       menuItemReviewsRepository
-  //           .findById(id)
-  //           .orElseThrow(() -&gt; new EntityNotFoundException(MenuItemReviews.class, id));
-  //
-  //   return review;
-  // }
+  /**
+   * Get a single review by id
+   *
+   * @param id the id of the review
+   * @return a MenuItemReviews
+   */
+  @Operation(summary = &quot;Get a single menu item review&quot;)
+  @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+  @GetMapping(&quot;&quot;)
+  public MenuItemReviews getById(@Parameter(name = &quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L53">    MenuItemReviews review =</span>
+        menuItemReviewsRepository
+<span class="fc" id="L55">            .findById(id)</span>
+<span class="fc" id="L56">            .orElseThrow(() -&gt; new EntityNotFoundException(MenuItemReviews.class, id));</span>
+
+<span class="fc" id="L58">    return review;</span>
+  }
 
   /**
    * Create a new review
