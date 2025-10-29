@@ -1,10 +1,9 @@
 {
-
     "databaseChangeLog": [
       {
         "changeSet": {
-          "id": "Recommendation_Request-1",
-          "author": "hechenjin",
+          "id": "recommendation_request-1",
+          "author": "hechenjin yu",
           "preConditions": [
             {
               "onFail": "MARK_RAN"
