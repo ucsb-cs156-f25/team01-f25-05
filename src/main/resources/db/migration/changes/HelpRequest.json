@@ -65,7 +65,7 @@
                   },
                   {
                     "column": {
-                      "name": "description",
+                      "name": "explanation",
                       "type": "VARCHAR(255)"
                     }
                   }
