@@ -3,7 +3,7 @@
       {
         "changeSet": {
           "id": "recommendation_request",
-          "author": "hechenjin yu",
+          "author": "hechenjin",
           "preConditions": [
             {
               "onFail": "MARK_RAN"
