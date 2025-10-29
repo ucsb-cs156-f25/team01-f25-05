@@ -2,7 +2,7 @@
     "databaseChangeLog": [
       {
         "changeSet": {
-          "id": "recommendation_request-1",
+          "id": "recommendation_request",
           "author": "hechenjin yu",
           "preConditions": [
             {
