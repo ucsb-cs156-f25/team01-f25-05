@@ -1,8 +1,9 @@
 {
+
     "databaseChangeLog": [
       {
         "changeSet": {
-          "id": "RecommendationRequest-1",
+          "id": "Recommendation_Request-1",
           "author": "hechenjin",
           "preConditions": [
             {

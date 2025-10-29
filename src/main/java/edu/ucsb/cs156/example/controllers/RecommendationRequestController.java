@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/** This is a REST controller for UCSBDates */
-@Tag(name = "RecommendationRequest")
+/** This is a REST controller for Recommendation Request */
+@Tag(name = "recommendation_request")
 @RequestMapping("/api/recommendationrequest")
 @RestController
 @Slf4j
@@ -124,7 +125,7 @@ public class RecommendationRequestController extends ApiController {
   @Operation(summary = "Update a single recommendation request")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PutMapping("")
-  public RecommendationRequest updateUCSBDate(
+  public RecommendationRequest updateRecommendationRequest(
       @Parameter(name = "id") @RequestParam Long id,
       @RequestBody @Valid RecommendationRequest incoming) {
 
@@ -143,5 +144,24 @@ public class RecommendationRequestController extends ApiController {
     recReqRepository.save(req);
 
     return req;
+  }
+
+  /**
+   * Delete a Recommendation Request
+   *
+   * @param id the id of the request to delete
+   * @return a message indicating the date was deleted
+   */
+  @Operation(summary = "Delete a Recommendation Request")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @DeleteMapping("")
+  public Object deleteRecommendationRequest(@Parameter(name = "id") @RequestParam Long id) {
+    RecommendationRequest req =
+        recReqRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(RecommendationRequest.class, id));
+
+    recReqRepository.delete(req);
+    return genericMessage("RecommendationRequest with id %s deleted".formatted(id));
   }
 }
