@@ -2,6 +2,7 @@ package edu.ucsb.cs156.example.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import edu.ucsb.cs156.example.entities.MenuItemReviews;
+import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.MenuItemReviewsRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -39,24 +40,23 @@ public class MenuItemReviewsController extends ApiController {
     return reviews;
   }
 
-  //
-  // /**
-  //  * Get a single review by id
-  //  *
-  //  * @param id the id of the review
-  //  * @return a MenuItemReviews
-  //  */
-  // @Operation(summary = "Get a single menu item review")
-  // @PreAuthorize("hasRole('ROLE_USER')")
-  // @GetMapping("")
-  // public MenuItemReviews getById(@Parameter(name = "id") @RequestParam Long id) {
-  //   MenuItemReviews review =
-  //       menuItemReviewsRepository
-  //           .findById(id)
-  //           .orElseThrow(() -> new EntityNotFoundException(MenuItemReviews.class, id));
-  //
-  //   return review;
-  // }
+  /**
+   * Get a single review by id
+   *
+   * @param id the id of the review
+   * @return a MenuItemReviews
+   */
+  @Operation(summary = "Get a single menu item review")
+  @PreAuthorize("hasRole('ROLE_USER')")
+  @GetMapping("")
+  public MenuItemReviews getById(@Parameter(name = "id") @RequestParam Long id) {
+    MenuItemReviews review =
+        menuItemReviewsRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(MenuItemReviews.class, id));
+
+    return review;
+  }
 
   /**
    * Create a new review
