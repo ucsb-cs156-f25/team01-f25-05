@@ -12,7 +12,7 @@
               "not": [
                 {
                   "tableExists": {
-                    "tableName": "RecommendationRequest"
+                    "tableName": "RECOMMENDATION_REQUEST"
                   }
                 }
               ]
@@ -27,7 +27,7 @@
                       "autoIncrement": true,
                       "constraints": {
                         "primaryKey": true,
-                        "primaryKeyName": "RecommendationRequest_PK"
+                        "primaryKeyName": "RECOMMENDATION_REQUEST_PK"
                       },
                       "name": "ID",
                       "type": "BIGINT"
@@ -35,7 +35,7 @@
                   },
                   {
                     "column": {
-                      "name": "REQUEST_EMAIL",
+                      "name": "REQUESTER_EMAIL",
                       "type": "VARCHAR(255)"
                     }
                   },
@@ -70,7 +70,8 @@
                     }
                   }
                 ],
-                "tableName": "RecommendationRequest"
+
+                "tableName": "RECOMMENDATION_REQUEST"
               }
             }
           ]
