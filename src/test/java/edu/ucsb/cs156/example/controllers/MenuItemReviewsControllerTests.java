@@ -89,6 +89,7 @@ public class MenuItemReviewsControllerTests extends ControllerTestCase {
     MenuItemReviews review =
         MenuItemReviews.builder()
             .id(7L)
+            .itemId(27L)
             .reviewerEmail("test@example.com")
             .stars(5)
             .dateReviewed(dateReviewed)
@@ -143,6 +144,7 @@ public class MenuItemReviewsControllerTests extends ControllerTestCase {
     MenuItemReviews review1 =
         MenuItemReviews.builder()
             .id(1L)
+            .itemId(23L)
             .reviewerEmail("user1@example.com")
             .stars(4)
             .dateReviewed(date1)
@@ -152,6 +154,7 @@ public class MenuItemReviewsControllerTests extends ControllerTestCase {
     MenuItemReviews review2 =
         MenuItemReviews.builder()
             .id(2L)
+            .itemId(12L)
             .reviewerEmail("user2@example.com")
             .stars(3)
             .dateReviewed(date2)
@@ -183,6 +186,7 @@ public class MenuItemReviewsControllerTests extends ControllerTestCase {
 
     MenuItemReviews expectedReview =
         MenuItemReviews.builder()
+            .itemId(27L)
             .reviewerEmail("test@example.com")
             .stars(5)
             .dateReviewed(dateReviewed)
@@ -194,7 +198,7 @@ public class MenuItemReviewsControllerTests extends ControllerTestCase {
     MvcResult response =
         mockMvc
             .perform(
-                post("/api/menuitemreviews/post?reviewerEmail=test@example.com&stars=5&dateReviewed=2023-01-01T12:00:00&comments=Excellent")
+                post("/api/menuitemreviews/post?itemId=27&reviewerEmail=test@example.com&stars=5&dateReviewed=2023-01-01T12:00:00&comments=Excellent")
                     .with(csrf()))
             .andExpect(status().isOk())
             .andReturn();
@@ -216,6 +220,7 @@ public class MenuItemReviewsControllerTests extends ControllerTestCase {
     MenuItemReviews review =
         MenuItemReviews.builder()
             .id(15L)
+            .itemId(4L)
             .reviewerEmail("test@example.com")
             .stars(4)
             .dateReviewed(dateReviewed)
@@ -271,6 +276,7 @@ public class MenuItemReviewsControllerTests extends ControllerTestCase {
     MenuItemReviews origReview =
         MenuItemReviews.builder()
             .id(67L)
+            .itemId(3L)
             .reviewerEmail("test@example.com")
             .stars(4)
             .dateReviewed(dateOrig)
@@ -280,6 +286,7 @@ public class MenuItemReviewsControllerTests extends ControllerTestCase {
     MenuItemReviews editedReview =
         MenuItemReviews.builder()
             .id(67L)
+            .itemId(2L)
             .reviewerEmail("admin@example.com")
             .stars(5)
             .dateReviewed(dateEdited)
@@ -319,6 +326,7 @@ public class MenuItemReviewsControllerTests extends ControllerTestCase {
     MenuItemReviews editedReview =
         MenuItemReviews.builder()
             .id(67L)
+            .itemId(6L)
             .reviewerEmail("admin@example.com")
             .stars(5)
             .dateReviewed(dateReviewed)
